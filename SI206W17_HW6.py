@@ -81,7 +81,7 @@ def access_third_elem(seq):
 ## End
 
 # Write your equivalent function and assignment statement here
-lambda x:x[2]
+sample_func = lambda x:x[2]
 
 ## [PROBLEM 4]
 print("\n\n***** Problem 4 *****")
@@ -114,9 +114,9 @@ print("\n\n***** Problem 6 *****")
 # A Student's programming_productivity is defined as that student's number of programs written divided by the years they have been at UMich.
 
 # Use the Python map function on the programmers list you just created, in order to create an map instance iterator of numbers representing the productivity of each student. Save the map iterator in a variable called prod_iter.
-
+prod_iter = map(lambda x: x.num_programs/x.years_UM, programmers)
 ## Write code to cast that iterator to a list. Save that list in the variable prod_list.
-
+prod_list =[student_inst for student_inst in prod_iter]
 ## You may add a method to the Student class if you wish in order to do this, but you do not need to. (If you do, make sure you do not create any syntax errors that keep code/tests from running!)
 
 
@@ -127,16 +127,16 @@ print("\n\n***** Problem 7 *****")
 
 ## But be careful that if you use answers from previous problems, you use the LISTs you generated, so that all your tests can still pass and you avoid confusion!
 
-
+names_and_productivities = [ (student.name,(student.num_programs/student.years_UM)) for student in programmers ]
 
 ## [PROBLEM 8]
 print("\n\n***** Problem 8 *****")
 # Use the Python filter function to select the subset of programmers who have names with 5 or more characters. (i.e. ["Albert","Dinesh","Euijin"]) Your result should be an filter object that points to Student instances. Save that filter iterator in a variable called long_names.
-
+long_names = filter(lambda a: len(a.name)>=5, programmers)
 
 
 ## Then write code to cast the value of long_names to a list and save it in the variable long_names_list. 
-
+long_names_list = [student for student in long_names]
 
 
 ## [PROBLEM 9]
@@ -145,7 +145,8 @@ print("\n\n***** Problem 9 *****")
 # Use a list comprehension to generate a LIST of just the names of those Student instances whose name is longer than their seniority (i.e., ["Albert", "Mai", "Dinesh", "Euijin"]). Assign it to a variable called names_with_not_too_much_seniority.
 
 ## Note that you can use another list you have already created for this problem.
-
+seniority_checker = filter(lambda a: len(a.name)>=a.years_UM, programmers)
+names_with_not_too_much_seniority = [student.name for student in seniority_checker]
 
 
 
@@ -165,19 +166,33 @@ print("\n\n***** Problem 10 *****")
 ## We have provided files samplehw6_1.txt and samplehw6_2.txt for your use for this problem, which hopefully you have downloaded, so you can test with those file names! The test below also relies upon these files. Of course, you could also create other files for testing.
 
 # Define readfiles (make sure to close the file reference in the right place)
-
+def readfiles(lst_of_filenames):
+    for filename in lst_of_filenames:
+        f = open(filename,'r')
+        for item in f:
+            yield item
+        f.close()
+       
+    
 
 # Define len_check
+def len_check(file_gen):
+    for line in file_gen:
+        if len(line) > 40:
+            yield line
 
 
 # Define main_filterer
-
+def main_filterer(list_of_files):
+    desired_lines = len_check(readfiles(list_of_files))
+    for line in desired_lines:
+        yield line
 
 
 ## Uncomment this code to test so you can see easily what results from your code. DO uncomment it. DO NOT delete or change it. (You can add other code above while you work, of course.)
-# provided_file_names = ["samplehw6_1.txt","samplehw6_2.txt"]
-# for ln in main_filterer(provided_file_names):
-#     print(ln.rstrip('\n'), end=" ")
+provided_file_names = ["samplehw6_1.txt","samplehw6_2.txt"]
+for ln in main_filterer(provided_file_names):
+    print(ln.rstrip('\n'), end=" ")
 #####
 
 
